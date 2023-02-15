@@ -7,55 +7,56 @@ const Pagination = ({ limit, offset, total, setOffset }) => {
   const pageArray = [-2, -1, 0, 1, 2].map((v) => currentPage + v).filter((page) => page > 0 && page <= pageCount);
 
   return (
-    <div className="pagination">
+    <nav className="pagination">
       {total > 0 && (
-        <div>
-          <button onClick={() => setOffset(0)}>All left</button>
-          <button onClick={() => setOffset((prev) => Math.max(prev - limit, 0))}>Left</button>
+        <ul className="pageNumbers">
+          <li onClick={() => setOffset(0)}>&laquo;</li>
+          <li onClick={() => setOffset((prev) => Math.max(prev - limit, 0))}>Prev</li>
 
           {!pageArray.includes(1) && (
             <>
-              <button
+              <li
                 onClick={() => {
                   setOffset(0);
                 }}
               >
                 1
-              </button>
-              <button>...</button>
+              </li>
+              <li>...</li>
             </>
           )}
 
           {pageArray.map((page) => {
             return (
-              <button
+              <li
+                className={currentPage === page ? 'active' : null}
                 onClick={() => {
                   setOffset(limit * (page - 1));
                 }}
               >
                 {page}
-              </button>
+              </li>
             );
           })}
 
           {!pageArray.includes(pageCount) && (
             <>
-              <button>...</button>
-              <button
+              <li>...</li>
+              <li
                 onClick={() => {
                   setOffset(highestPossibleOffset);
                 }}
               >
                 {pageCount}
-              </button>
+              </li>
             </>
           )}
 
-          <button onClick={() => setOffset((prev) => Math.min(prev + limit, highestPossibleOffset))}>Right</button>
-          <button onClick={() => setOffset(highestPossibleOffset)}>All right</button>
-        </div>
+          <li onClick={() => setOffset((prev) => Math.min(prev + limit, highestPossibleOffset))}>Next</li>
+          <li onClick={() => setOffset(highestPossibleOffset)}>&#187;</li>
+        </ul>
       )}
-    </div>
+    </nav>
   );
 };
 

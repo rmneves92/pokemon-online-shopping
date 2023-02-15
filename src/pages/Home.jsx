@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { convertToLowerCase } from '../utils/text';
 import { PokeInfo } from '../components/PokeInfo';
-import { Card } from '../components/Card';
-import { Pagination } from '../components/Pagination';
+
+import { Filter } from '../components/Filter';
+import { Pokedex } from '../components/Pokedex';
 
 import '../index.css';
 
@@ -85,36 +86,23 @@ const Home = () => {
 
   return (
     <div className="container">
-      <div className="filter">
-        <div>
-          <label htmlFor="search">Search</label>
-          <input name="search" placeholder="Search by id or name..." onChange={(e) => setQuery(e.target.value)} onKeyDown={handleKeyDown} />
-          <button onClick={() => handleSearch(query)}>Go!</button>
-        </div>
+      <Filter
+        query={query}
+        setQuery={setQuery}
+        handleKeyDown={handleKeyDown}
+        handleSearch={handleSearch}
+        total={total}
+        limit={limit}
+        setLimit={setLimit}
+        offset={offset}
+        setOffset={setOffset}
+        from={from}
+        to={to}
+        limitOptions={limitOptions}
+        handleChangeLimit={handleChangeLimit}
+      />
 
-        <Pagination total={total} limit={limit} setLimit={setLimit} offset={offset} setOffset={setOffset} />
-
-        <div>
-          <p>
-            Showing {from} to {to} of {total} items
-          </p>
-          <select onChange={handleChangeLimit}>
-            {limitOptions?.map((opt) => (
-              <option value={opt}> {opt} per page </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div className="catalog">
-        {!pokeInfo && pokemons ? (
-          pokemons?.map((pokemon) => <Card pokemon={pokemon} showPokemonDetails={showPokemonDetails} />)
-        ) : (
-          <a className="back-button" onClick={() => setPokeInfo(null)}>
-            &larr; back
-          </a>
-        )}
-      </div>
+      <Pokedex pokeInfo={pokeInfo} pokemons={pokemons} showPokemonDetails={showPokemonDetails} setPokeInfo={setPokeInfo} />
 
       {pokeInfo && <PokeInfo pokemon={pokeInfo} />}
     </div>

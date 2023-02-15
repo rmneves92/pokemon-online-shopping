@@ -33,10 +33,16 @@ code {
   border-radius: 0.5rem;
 
   box-shadow: 0px -5px 50px 0px rgba(0, 0, 0, 0.1);
+  transition: margin-top 0.2s;
+}
+
+.pokemon-card:hover {
+  transition: margin-top 0.2s;
+  margin-top: -10px;
+  z-index: 2;
 }
 
 .filter {
-  height: 8rem;
   background: #fff;
   box-shadow: 0px -5px 50px 0px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
@@ -44,6 +50,8 @@ code {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  padding: 2rem;
 }
 
 .pokemon-name {
@@ -54,6 +62,22 @@ code {
   width: 12rem;
 }
 
+.back-button {
+  cursor: pointer;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.pokemon-card-details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border-radius: 0.5rem;
+
+  box-shadow: 0px -5px 50px 0px rgba(0, 0, 0, 0.1);
+}
+
 .pokemon-details {
   display: flex;
   align-items: center;
@@ -61,14 +85,37 @@ code {
   flex-direction: column;
 }
 
-.back-button {
-  cursor: pointer;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-}
-
 .pagination {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: center;
+
+  border-radius: 6px;
+
+  font-size: 0.6rem;
+}
+
+.pageNumbers {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+.pageNumbers li {
+  margin: 0;
+  cursor: pointer;
+  padding: 0.5rem;
+  height: 1rem;
+  width: 1rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.active {
+  transition: 0.2s;
+  background-color: var(--color-primary);
+  border-radius: 20px;
 }
