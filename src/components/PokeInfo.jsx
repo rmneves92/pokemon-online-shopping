@@ -1,5 +1,5 @@
 import '../index.css';
-import { capitalizeFirstLetter } from '../utils/text';
+import { capitalize } from '../utils/text';
 
 const PokeInfo = ({ pokemon }) => {
   console.log(pokemon);
@@ -7,8 +7,8 @@ const PokeInfo = ({ pokemon }) => {
     <div className="pokemon-card-details ">
       <div className="pokemon-details">
         <p>{pokemon?.id}</p>
-        <img className="pokemon-image" src={pokemon?.sprites.front_default} />
-        <p className="pokemon-name">{capitalizeFirstLetter(pokemon?.name)}</p>
+        <img className="pokemon-image" alt={pokemon.name} src={pokemon.sprites.front_default} />
+        <p className="pokemon-name">{capitalize(pokemon.name)}</p>
       </div>
 
       <div>
