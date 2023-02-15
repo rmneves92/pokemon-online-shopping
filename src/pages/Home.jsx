@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { capitalizeFirstLetter, convertToLowerCase } from '../utils/text';
+import { convertToLowerCase } from '../utils/text';
 import { PokeInfo } from '../components/PokeInfo';
 import { Card } from '../components/Card';
+import { Pagination } from '../components/Pagination';
 
 import '../index.css';
 
@@ -10,29 +10,17 @@ const Home = () => {
   const [pokemons, setPokemons] = useState(null);
   const [pokeInfo, setPokeInfo] = useState(null);
   const [query, setQuery] = useState('');
+  const [limit, setLimit] = useState(100);
+  const [offset, setOffset] = useState(0);
+  const [total, setTotal] = useState(1000);
 
   useEffect(() => {
-    // fetchPokemons();
     fetchAllPokemons();
-  }, []);
-
-  //   useEffect(() => {
-  //     console.log('query: ', query);
-
-  //     if (!query.toLowerCase().trim()) return;
-
-  //     if (!query.toLowerCase().trim() === '') fetchPokemons();
-
-  //     const getPokemons = setTimeout(() => {
-  //       searchPokemons(query);
-  //     }, 1000);
-
-  //     return () => clearTimeout(getPokemons);
-  //   }, [query]);
+  }, [limit, offset]);
 
   const fetchAllPokemons = () => {
     try {
-      fetch('https://pokeapi.co/api/v2/pokemon/')
+      fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)
         .then((res) => res.json())
         .then((data) => {
           const pokemons = data.results.map((pokemon) => {
@@ -44,9 +32,6 @@ const Home = () => {
 
           setPokemons(pokemons);
         });
-      // const result = await Promise.all(endpoints.map((url) => fetch(url).then((res) => res.json())));
-
-      // setPokemons(result);
     } catch (error) {
       console.error(error);
     }
@@ -57,34 +42,6 @@ const Home = () => {
     return id;
   };
 
-  //   const fetchPokemons = async () => {
-  //     const endpoints = [];
-
-  //     try {
-  //       for (let i = 1; i <= 20; i++) {
-  //         endpoints.push(`https://pokeapi.co/api/v2/pokemon/${i}/`);
-  //       }
-
-  //       const result = await Promise.all(endpoints.map((url) => fetch(url).then((res) => res.json())));
-
-  //       setPokemons(result);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   const searchPokemons = (query) => {
-  //     console.log('searchPokemons: ', query);
-  //     try {
-  //       fetch(`https://pokeapi.co/api/v2/pokemon/${query}`)
-  //         .then((res) => res.json())
-  //         .then((data) => {
-  //           console.log('=> data: ', data);
-  //           setPokemons([data]);
-  //         });
-  //     } catch (error) {}
-  //   };
-
   const handleSearch = (name) => {
     const strLowerCase = convertToLowerCase(name);
 
@@ -94,31 +51,16 @@ const Home = () => {
       return;
     }
 
-    console.log('strLowerCase', strLowerCase);
-
     try {
       fetch(`https://pokeapi.co/api/v2/pokemon/${strLowerCase}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log('=> data: ', data);
-
           setPokeInfo(data);
-          //   setPokemons([]);
-          //   setPokemons([data]);
         });
     } catch (error) {
       console.error(error);
     }
   };
-
-  // const goToDetailsScreen = (url: string): void => {
-  //   navigate('/Details', { state: { url } });
-  // };
-
-  //   const handleInputChange = (value) => {
-
-  //     setQuery(value)
-  //   }
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -127,16 +69,41 @@ const Home = () => {
   };
 
   const showPokemonDetails = (pokemonName) => {
-    console.log('showPokemonDetails', pokemonName);
     handleSearch(pokemonName);
+  };
+
+  const limitOptions = [10, 20, 30, 40, 50];
+
+  const from = Math.min(offset + 1, total);
+  const to = Math.min(offset + limit, total);
+
+  const handleChangeLimit = (e) => {
+    const option = e.target.value;
+    setLimit(option);
+    setOffset(0);
   };
 
   return (
     <div className="container">
       <div className="filter">
-        <label htmlFor="search">Search</label>
-        <input name="search" placeholder="Search by id or name..." onChange={(e) => setQuery(e.target.value)} onKeyDown={handleKeyDown} />
-        <button onClick={() => handleSearch(query)}>Go!</button>
+        <div>
+          <label htmlFor="search">Search</label>
+          <input name="search" placeholder="Search by id or name..." onChange={(e) => setQuery(e.target.value)} onKeyDown={handleKeyDown} />
+          <button onClick={() => handleSearch(query)}>Go!</button>
+        </div>
+
+        <Pagination total={total} limit={limit} setLimit={setLimit} offset={offset} setOffset={setOffset} />
+
+        <div>
+          <p>
+            Showing {from} to {to} of {total} items
+          </p>
+          <select onChange={handleChangeLimit}>
+            {limitOptions?.map((opt) => (
+              <option value={opt}> {opt} per page </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div className="catalog">
