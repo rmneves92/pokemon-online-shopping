@@ -2,7 +2,7 @@
 
 ## About the Project
 
-This app lists all available Pokémon and allows you to see the details of each Pokémon. The ability to filter by name, ID or abilities makes it easy to find specific Pokémons, while the ability to view details and navigate through pages makes it easy to explore the entire list.
+This project lists all available Pokémon and allows you to see the details of each Pokémon. The ability to filter by name, ID or abilities makes it easy to find specific Pokémons, while the ability to view details and navigate through pages makes it easy to explore the entire list.
 
 ## Features
 
@@ -28,14 +28,14 @@ This app lists all available Pokémon and allows you to see the details of each 
 
 ## Tests
 
-1. Run the command `npm run test` or `yarn test` in your terminal will run all unit tests that you have set up for the project using `Jest` and `React Testing Library`.
+1. Run the command `npm run test` or `yarn test` in your terminal will run all unit tests set up for the project using `Jest` and `React Testing Library`.
 
 [jest-fetch-mock](https://www.npmjs.com/package/jest-fetch-mock) was used to mock fetch API in Jest tests. It provides a way to simulate the response from an API endpoint to test the code that makes requests to that endpoint.
 
 ## Approach
 
-This application has only one page called `Home`. When the component is mounted, it initializes several pieces of state using the `useState` hook, and sets a number of `useRef` variables to false or an empty string.
-The component fetches data from the PokeAPI using the fetch function to get lists of Pokémon and their abilities, as well as information about specific Pokémon. The fetched data is then used to set the state, which controls the rendering of components that display Pokémon data.
-The component includes several helper functions that allow users to filter the displayed Pokémon based on their abilities or to search for specific Pokémon by name or id.
-The component also uses the `useEffect` hook to watch for changes to state values and execute certain code blocks when those values change. This includes updating the displayed Pokémon when the selected abilities change, or resetting the displayed Pokémon when the search query is cleared.
+This application has only one page called `Home`. When the Home page is mounted, it initializes several pieces of state using the `useState` hook, and uses `useRef` in the text field to search for Pokémons.
+The Home page fetches data from the PokeAPI using the fetch function to get lists of Pokémon and their abilities, as well as information about specific Pokémon. The fetched data is then used to set the state, which controls the rendering of components that display Pokémon data.
+The project includes several helper functions that allow users to filter the displayed Pokémon based on their abilities or to search for specific Pokémon by name or id.
+The project also uses the `useEffect` hook to watch for changes to state values and execute certain code blocks when those values change. This includes updating the displayed Pokémon when the selected abilities change, or resetting the displayed Pokémon when the search query is cleared.
 Finally, the `Home` component defines a series of child components that render the various UI elements of the app, including a list of Pokémon, a search bar, and various filters and pagination controls.
