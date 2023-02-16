@@ -1,4 +1,5 @@
 import { capitalize } from '../../utils/text';
+import { Stats } from '../Stats/Stats';
 import styles from './PokeInfo.module.css';
 
 const PokeInfo = ({ pokemon }) => {
@@ -15,6 +16,8 @@ const PokeInfo = ({ pokemon }) => {
       </div>
 
       <div className={styles.stats}>
+        <Stats stats={pokemon.stats} />
+
         <div className={styles.ability_card}>
           <p className={styles.title}>Ability:</p>
           <ul>

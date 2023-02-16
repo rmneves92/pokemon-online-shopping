@@ -1,18 +1,19 @@
+import { forwardRef } from 'react';
 import { capitalize } from '../../utils/text';
 import styles from './Filter.module.css';
 
-const Filter = ({
-  searchQuery,
-  setSearchQuery,
-  handleKeyDown,
-  handleSearch,
-  handleChangeLimit,
-  selectedAbilities,
-  removeAbility,
-  handleSelectAbility,
-  abilities,
-}) => {
+const Filter = forwardRef(({ handleSearch, handleChangeLimit, selectedAbilities, removeAbility, handleSelectAbility, abilities }, ref) => {
   const limitOptions = [10, 20, 30, 40, 50];
+
+  const handleChangeSearchQuery = (text) => {
+    ref.current = text;
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch(ref.current);
+    }
+  };
 
   return (
     <div className={styles.panel} data-testid="filter">
@@ -23,11 +24,11 @@ const Filter = ({
             type="text"
             name="search"
             placeholder="Search by id or name..."
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => handleChangeSearchQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             data-testid="search-input"
           />
-          <button className={styles.button} onClick={() => handleSearch(searchQuery)} data-testid="search-btn">
+          <button className={styles.button} onClick={() => handleSearch(ref.current)} data-testid="search-btn">
             Go!
           </button>
         </div>
@@ -72,6 +73,6 @@ const Filter = ({
       )}
     </div>
   );
-};
+});
 
 export { Filter };

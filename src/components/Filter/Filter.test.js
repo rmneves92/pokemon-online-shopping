@@ -1,74 +1,71 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Filter } from './Filter';
 
 describe('Filter', () => {
-  const abilities = [{ name: 'static' }, { name: 'battle-armor' }, { name: 'pressure' }];
-
-  it('should render a search input and submit button', () => {
-    render(<Filter />);
-    const searchInput = screen.getByTestId('search-input');
-    expect(searchInput).toBeInTheDocument();
-
-    const goButton = screen.getByTestId('search-btn');
-    expect(goButton).toBeInTheDocument();
-  });
-
-  it('should render a select input to filter pokemons by ability', () => {
-    render(<Filter abilities={abilities} />);
-    const abilitySelect = screen.getByTestId('combo-ability');
-    expect(abilitySelect).toBeInTheDocument();
-  });
-
-  it('should render a select input to set the number of pokemons per page', () => {
-    render(<Filter />);
-
-    const limitSelect = screen.getByTestId('limit-items');
-    expect(limitSelect).toBeInTheDocument();
-  });
-
-  it('should render a list of selected abilities', () => {
-    const selectedAbilities = ['static', 'battle-armor'];
-    render(<Filter selectedAbilities={selectedAbilities} />);
-    const abilityList = screen.getByTestId('abilities-list');
-    expect(abilityList).toBeInTheDocument();
-
-    const abilityItems = screen.getAllByRole('listitem');
-
-    expect(abilityItems).toHaveLength(2);
-    expect(abilityItems[0]).toHaveTextContent('Static');
-    expect(abilityItems[1]).toHaveTextContent('Battle Armor');
-  });
-
-  it('should call handleSearch when the submit button is clicked', () => {
+  it('should call handleSearch when the search button is clicked', () => {
     const handleSearch = jest.fn();
-    render(<Filter handleSearch={handleSearch} />);
-    const goButton = screen.getByTestId('search-btn');
-    userEvent.click(goButton);
-    expect(handleSearch).toHaveBeenCalledTimes(1);
-  });
 
-  it('should call handleChangeLimit when the number of pokemons per page is changed', () => {
-    const handleChangeLimit = jest.fn();
+    const ref = { current: '' };
 
-    render(<Filter handleChangeLimit={handleChangeLimit} />);
+    render(<Filter handleSearch={handleSearch} ref={ref} />);
 
-    const limitSelect = screen.getByTestId('limit-items');
-    userEvent.selectOptions(limitSelect, ['20']);
+    const searchInput = screen.getByTestId('search-input');
+    const searchButton = screen.getByTestId('search-btn');
 
-    expect(handleChangeLimit).toHaveBeenCalledTimes(1);
-    expect(handleChangeLimit).toHaveBeenCalledWith('20');
+    userEvent.type(searchInput, 'pikachu');
+    userEvent.click(searchButton);
+
+    expect(handleSearch).toHaveBeenCalledWith('pikachu');
   });
 
   it('should call handleSelectAbility when an ability is selected', () => {
     const handleSelectAbility = jest.fn();
 
-    render(<Filter abilities={abilities} handleSelectAbility={handleSelectAbility} />);
+    const abilities = [{ name: 'electric' }, { name: 'water' }];
 
-    const abilitySelect = screen.getByTestId('combo-ability');
-    userEvent.selectOptions(abilitySelect, ['static']);
+    render(<Filter handleSelectAbility={handleSelectAbility} abilities={abilities} />);
+    const abilityCombo = screen.getByTestId('combo-ability');
 
-    expect(handleSelectAbility).toHaveBeenCalledTimes(1);
-    expect(handleSelectAbility).toHaveBeenCalledWith('static');
+    userEvent.selectOptions(abilityCombo, ['water']);
+
+    expect(handleSelectAbility).toHaveBeenCalledWith('water');
+  });
+
+  it('should call handleChangeLimit when the limit is changed', () => {
+    const handleChangeLimit = jest.fn();
+
+    render(<Filter handleChangeLimit={handleChangeLimit} />);
+    const limitCombo = screen.getByTestId('limit-items');
+
+    userEvent.selectOptions(limitCombo, ['20']);
+
+    expect(handleChangeLimit).toHaveBeenCalledWith('20');
+  });
+
+  it('should update the ref when the search query is changed', () => {
+    const ref = { current: '' };
+
+    render(<Filter ref={ref} />);
+    const searchInput = screen.getByTestId('search-input');
+
+    userEvent.type(searchInput, 'mewtwo');
+
+    expect(ref.current).toBe('mewtwo');
+  });
+
+  it('should render a list of selected abilities', () => {
+    const selectedAbilities = ['static', 'battle-armor'];
+
+    render(<Filter selectedAbilities={selectedAbilities} />);
+
+    const abilityList = screen.getByTestId('abilities-list');
+    expect(abilityList).toBeInTheDocument();
+
+    const abilityItems = screen.getAllByRole('listitem');
+    expect(abilityItems).toHaveLength(2);
+    expect(abilityItems[0]).toHaveTextContent('Static');
+    expect(abilityItems[1]).toHaveTextContent('Battle Armor');
   });
 });

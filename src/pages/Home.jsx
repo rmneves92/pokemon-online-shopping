@@ -20,6 +20,7 @@ const Home = () => {
   const [showEmptyMessage, setShowEmptyMessage] = useState(false);
 
   const dataFetchedRef = useRef(false);
+  const querySearchRef = useRef('');
 
   const paginatePokemons = useCallback(
     (array) => {
@@ -168,12 +169,6 @@ const Home = () => {
       });
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleSearchPokemon(searchQuery);
-    }
-  };
-
   const showPokemonDetails = (pokemonName) => {
     handleSearchPokemon(pokemonName);
   };
@@ -205,8 +200,8 @@ const Home = () => {
         searchQuery={searchQuery}
         selectedAbilities={selectedAbilities}
         abilities={abilities}
+        ref={querySearchRef}
         setSearchQuery={setSearchQuery}
-        handleKeyDown={handleKeyDown}
         handleSearch={handleSearchPokemon}
         handleChangeLimit={handleChangeLimit}
         removeAbility={removeAbility}
