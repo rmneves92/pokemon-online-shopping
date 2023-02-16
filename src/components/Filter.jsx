@@ -1,59 +1,63 @@
-import { Pagination } from '../components/Pagination';
-import '../index.css';
+import { capitalize } from '../utils/text';
+import styles from './Filter.module.css';
 
 const Filter = ({
   query,
   setQuery,
   handleKeyDown,
   handleSearch,
-  total,
-  limit,
-  setLimit,
-  offset,
-  setOffset,
-  from,
-  to,
   limitOptions,
   handleChangeLimit,
   selectedAbilities,
   removeAbility,
+  handleSelectAbility,
+  abilities,
 }) => {
   return (
-    <div className="filter-panel">
-      <div className="filters">
+    <div className={styles.panel}>
+      <div className={styles.filters}>
         <div>
-          <label htmlFor="search">Search</label>
-          <input name="search" placeholder="Search by id or name..." onChange={(e) => setQuery(e.target.value)} onKeyDown={handleKeyDown} />
-          <button onClick={() => handleSearch(query)}>Go!</button>
+          <p className={styles.label}>Search</p>
+          <input type="text" name="search" placeholder="Search by id or name..." onChange={(e) => setQuery(e.target.value)} onKeyDown={handleKeyDown} />
+          <button className={styles.button} onClick={() => handleSearch(query)}>
+            Go!
+          </button>
         </div>
 
-        <Pagination total={total} limit={limit} setLimit={setLimit} offset={offset} setOffset={setOffset} />
+        <div>
+          <p className={styles.label}>Filter by ability</p>
+
+          <select onChange={(e) => handleSelectAbility(e.target.value)}>
+            {abilities.map((ability) => (
+              <option value={ability.name}>{capitalize(ability.name)}</option>
+            ))}
+          </select>
+        </div>
 
         <div>
-          <p>
-            Showing {from} to {to} of {total} items
-          </p>
-          <select onChange={handleChangeLimit}>
+          <p className={styles.label}>Pokémons per page</p>
+          <select onChange={(e) => handleChangeLimit(e.target.value)}>
             {limitOptions?.map((opt) => (
-              <option value={opt}> {opt} per page </option>
+              <option value={opt}> {opt}</option>
             ))}
           </select>
         </div>
       </div>
 
       {selectedAbilities && (
-        <ul className="selected-categories">
+        <ul className={styles.abilities}>
           {selectedAbilities.map((ability) => (
-            <li className="category-item">
+            <li className={styles.item}>
               <span>
-                {ability}{' '}
-                <span className="remove-ability" onClick={() => removeAbility(ability)}>
+                {capitalize(ability)}
+                <span className={styles.remove} onClick={() => removeAbility(ability)}>
                   &times;
                 </span>
               </span>
             </li>
           ))}
         </ul>
+        // </div>
       )}
     </div>
   );

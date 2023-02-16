@@ -1,0 +1,23 @@
+.container {
+  margin: auto;
+  width: 75vw;
+  padding: 4rem 0;
+}
+
+.pagination_wrap {
+  padding-bottom: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.total_items {
+  font-size: 0.8rem;
+  color: var(--color-grey-dark-2);
+  text-align: right;
+  flex: 1;
+  display: flex;
+  flex: 0 1 auto;
+  margin-left: auto;
+}

@@ -1,0 +1,11 @@
+.pokedex {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 1rem;
+}
+
+.back {
+  cursor: pointer;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}

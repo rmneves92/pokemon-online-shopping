@@ -1,4 +1,4 @@
-import '../index.css';
+import styles from './Pagination.module.css';
 
 const Pagination = ({ limit, offset, total, setOffset }) => {
   const pageCount = Math.ceil(total / limit);
@@ -7,9 +7,9 @@ const Pagination = ({ limit, offset, total, setOffset }) => {
   const pageArray = [-2, -1, 0, 1, 2].map((v) => currentPage + v).filter((page) => page > 0 && page <= pageCount);
 
   return (
-    <nav className="pagination">
+    <nav className={styles.pagination}>
       {total > 0 && (
-        <ul className="pageNumbers">
+        <ul className={styles.numbers}>
           <li onClick={() => setOffset(0)}>&laquo;</li>
           <li onClick={() => setOffset((prev) => Math.max(prev - limit, 0))}>Prev</li>
 
@@ -29,7 +29,7 @@ const Pagination = ({ limit, offset, total, setOffset }) => {
           {pageArray.map((page) => {
             return (
               <li
-                className={currentPage === page ? 'active' : null}
+                className={currentPage === page ? styles.active : null}
                 onClick={() => {
                   setOffset(limit * (page - 1));
                 }}

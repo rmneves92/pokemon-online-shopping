@@ -1,0 +1,28 @@
+.details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.image {
+  width: 12rem;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  cursor: pointer;
+  border-radius: 10px;
+  box-shadow: 0px -5px 50px 0px rgba(0, 0, 0, 0.1);
+  transition: margin-top 0.2s;
+  transition: 0.2s;
+}
+
+.card:hover {
+  transition: transform 0.2s;
+  transform: translateY(-10px);
+  z-index: 10;
+}

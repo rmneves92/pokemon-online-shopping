@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { convertToLowerCase } from '../utils/text';
 import { PokeInfo } from '../components/PokeInfo';
-
+import { Pagination } from '../components/Pagination';
 import { Filter } from '../components/Filter';
 import { Pokedex } from '../components/Pokedex';
-
-import '../index.css';
+import styles from './Home.module.css';
 
 const Home = () => {
   const [pokemons, setPokemons] = useState(null);
@@ -19,6 +18,7 @@ const Home = () => {
 
   useEffect(() => {
     if (selectedAbilities.length > 0) {
+      // setOffset(0);
       getPokemonsByAbility();
     } else {
       fetchAllPokemons();
@@ -29,16 +29,20 @@ const Home = () => {
     setPokeInfo(null);
   }, [limit, offset, selectedAbilities]);
 
+  useEffect(() => {
+    setOffset(0);
+  }, [selectedAbilities]);
+
   const getPokemonsByAbility = async () => {
-    const endpoints = [];
+    const abilities = [];
     try {
       for (let ability of selectedAbilities) {
-        endpoints.push(`https://pokeapi.co/api/v2/ability/${ability}`);
+        abilities.push(ability);
       }
 
       const response = await Promise.all(
-        endpoints.map((endpoint) =>
-          fetch(endpoint)
+        abilities.map((ability) =>
+          fetch(`https://pokeapi.co/api/v2/ability/${ability}`)
             .then((res) => res.json())
             .then((data) => {
               const pokemons = data.pokemon.map((pokemon) => {
@@ -57,11 +61,18 @@ const Home = () => {
 
       const sortedArray = sortPokemonsById(concatArray);
 
-      setPokemons(sortedArray);
+      const paginatedPokemons = paginatePokemons(sortedArray);
+
+      setPokemons(paginatedPokemons);
       setTotal(sortedArray.length);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const paginatePokemons = (array) => {
+    const currentPage = offset / limit + 1;
+    return array.slice((currentPage - 1) * limit, currentPage * limit);
   };
 
   const sortPokemonsById = (array) => array.sort((a, b) => a.id - b.id);
@@ -79,6 +90,7 @@ const Home = () => {
           });
 
           setPokemons(pokemons);
+          setTotal(1000);
         });
     } catch (error) {
       console.error(error);
@@ -87,7 +99,7 @@ const Home = () => {
 
   const getAbilities = () => {
     try {
-      fetch(`https://pokeapi.co/api/v2/ability/?offset=0&limit=10`)
+      fetch(`https://pokeapi.co/api/v2/ability`)
         .then((res) => res.json())
         .then((data) => {
           console.log('abilities: ', data);
@@ -110,6 +122,7 @@ const Home = () => {
     if (!strLowerCase || strLowerCase === '') {
       fetchAllPokemons();
       setPokeInfo(null);
+      setSelectedAbilities([]);
       return;
     }
 
@@ -139,60 +152,55 @@ const Home = () => {
   const from = Math.min(offset + 1, total);
   const to = Math.min(offset + limit, total);
 
-  const handleChangeLimit = (e) => {
-    const option = e.target.value;
-    setLimit(option);
+  const handleChangeLimit = (value) => {
+    setLimit(value);
     setOffset(0);
   };
 
   const handleSelectAbility = (ability) => {
     if (selectedAbilities.includes(ability)) {
       removeAbility(ability);
+      // setOffset(0);
       return;
     }
 
+    // setOffset(0);
     setSelectedAbilities([...selectedAbilities, ability]);
   };
 
   const removeAbility = (ability) => {
-    console.log('=>ability', ability);
     const filteredAbilities = selectedAbilities.filter((item) => item !== ability);
     setSelectedAbilities(filteredAbilities);
+    setTotal(filteredAbilities.length);
+    setOffset(0);
   };
 
   return (
-    <div className="container">
-      <aside className="abilities-panel">
-        <ul className="abilities-list">
-          {abilities.map((ability) => {
-            return <li onClick={() => handleSelectAbility(ability.name)}>{ability.name}</li>;
-          })}
-        </ul>
-      </aside>
+    <div className={styles.container}>
+      <Filter
+        query={query}
+        setQuery={setQuery}
+        handleKeyDown={handleKeyDown}
+        handleSearch={handleSearch}
+        limitOptions={limitOptions}
+        handleChangeLimit={handleChangeLimit}
+        selectedAbilities={selectedAbilities}
+        removeAbility={removeAbility}
+        handleSelectAbility={handleSelectAbility}
+        abilities={abilities}
+      />
 
-      <div className="pokedex">
-        <Filter
-          query={query}
-          setQuery={setQuery}
-          handleKeyDown={handleKeyDown}
-          handleSearch={handleSearch}
-          total={total}
-          limit={limit}
-          setLimit={setLimit}
-          offset={offset}
-          setOffset={setOffset}
-          from={from}
-          to={to}
-          limitOptions={limitOptions}
-          handleChangeLimit={handleChangeLimit}
-          selectedAbilities={selectedAbilities}
-          removeAbility={removeAbility}
-        />
+      <div className={styles.pagination_wrap}>
+        <Pagination total={total} limit={limit} setLimit={setLimit} offset={offset} setOffset={setOffset} />
 
-        <Pokedex pokeInfo={pokeInfo} pokemons={pokemons} showPokemonDetails={showPokemonDetails} setPokeInfo={setPokeInfo} />
-
-        {pokeInfo && <PokeInfo pokemon={pokeInfo} />}
+        <p className={styles.total_items}>
+          Showing {from} to {to} of {total} items
+        </p>
       </div>
+
+      <Pokedex pokeInfo={pokeInfo} pokemons={pokemons} showPokemonDetails={showPokemonDetails} setPokeInfo={setPokeInfo} />
+
+      {pokeInfo && <PokeInfo pokemon={pokeInfo} />}
     </div>
   );
 };
