@@ -79,10 +79,12 @@ const Home = () => {
     setTotal(sortedArray.length);
   }, [createListOfSelectedAbilities, getPokemonsByAbility]);
 
-  const getPokemons = () => {
+  const getPokemons = useCallback(() => {
     fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)
       .then((res) => res.json())
       .then((data) => {
+        setTotal(data.count);
+
         const pokemons = data.results.map((pokemon) => {
           return {
             name: pokemon.name,
@@ -96,12 +98,11 @@ const Home = () => {
 
         setShowEmptyMessage(false);
         setPokemons(pokemons);
-        setTotal(1000);
       })
       .catch((err) => {
         setShowEmptyMessage(true);
       });
-  };
+  }, [limit, offset]);
 
   useEffect(() => {
     if (dataFetchedRef.current) return;
@@ -120,12 +121,12 @@ const Home = () => {
     }
 
     setPokeInfo(null);
-  }, [limit, offset, selectedAbilities, pokemonsWithAbilityFilter]);
+  }, [limit, offset, selectedAbilities, pokemonsWithAbilityFilter, paginatePokemons, getPokemons]);
 
   useEffect(() => {
     getPokemonsWithAbilityFilter();
     setOffset(0);
-  }, [selectedAbilities]);
+  }, [selectedAbilities, getPokemonsWithAbilityFilter]);
 
   const sortPokemonsById = (array) => array.sort((a, b) => a.id - b.id);
 
@@ -145,7 +146,7 @@ const Home = () => {
     return id;
   };
 
-  const handleSearch = (name) => {
+  const handleSearchPokemon = (name) => {
     const strLowerCase = convertToLowerCase(name);
 
     if (!strLowerCase || strLowerCase === '') {
@@ -169,12 +170,12 @@ const Home = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      handleSearch(searchQuery);
+      handleSearchPokemon(searchQuery);
     }
   };
 
   const showPokemonDetails = (pokemonName) => {
-    handleSearch(pokemonName);
+    handleSearchPokemon(pokemonName);
   };
 
   const handleChangeLimit = (value) => {
@@ -206,7 +207,7 @@ const Home = () => {
         abilities={abilities}
         setSearchQuery={setSearchQuery}
         handleKeyDown={handleKeyDown}
-        handleSearch={handleSearch}
+        handleSearch={handleSearchPokemon}
         handleChangeLimit={handleChangeLimit}
         removeAbility={removeAbility}
         handleSelectAbility={handleSelectAbility}

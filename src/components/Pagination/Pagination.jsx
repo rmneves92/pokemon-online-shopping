@@ -13,45 +13,47 @@ const Pagination = ({ limit, offset, total, setOffset }) => {
           <li onClick={() => setOffset(0)}>&laquo;</li>
           <li onClick={() => setOffset((prev) => Math.max(prev - limit, 0))}>Prev</li>
 
-          {!pageArray.includes(1) && (
-            <>
-              <li
-                onClick={() => {
-                  setOffset(0);
-                }}
-              >
-                1
-              </li>
-              <li>...</li>
-            </>
-          )}
+          <div className={styles.page_numbers}>
+            {!pageArray.includes(1) && (
+              <>
+                <li
+                  onClick={() => {
+                    setOffset(0);
+                  }}
+                >
+                  1
+                </li>
+                <li>...</li>
+              </>
+            )}
 
-          {pageArray.map((page) => {
-            return (
-              <li
-                key={page}
-                className={currentPage === page ? styles.active : null}
-                onClick={() => {
-                  setOffset(limit * (page - 1));
-                }}
-              >
-                {page}
-              </li>
-            );
-          })}
+            {pageArray.map((page) => {
+              return (
+                <li
+                  key={page}
+                  className={currentPage === page ? styles.active : null}
+                  onClick={() => {
+                    setOffset(limit * (page - 1));
+                  }}
+                >
+                  {page}
+                </li>
+              );
+            })}
 
-          {!pageArray.includes(pageCount) && (
-            <>
-              <li>...</li>
-              <li
-                onClick={() => {
-                  setOffset(highestPossibleOffset);
-                }}
-              >
-                {pageCount}
-              </li>
-            </>
-          )}
+            {!pageArray.includes(pageCount) && (
+              <>
+                <li>...</li>
+                <li
+                  onClick={() => {
+                    setOffset(highestPossibleOffset);
+                  }}
+                >
+                  {pageCount}
+                </li>
+              </>
+            )}
+          </div>
 
           <li onClick={() => setOffset((prev) => Math.min(prev + limit, highestPossibleOffset))}>Next</li>
           <li onClick={() => setOffset(highestPossibleOffset)}>&#187;</li>

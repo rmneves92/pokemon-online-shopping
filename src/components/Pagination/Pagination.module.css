@@ -10,6 +10,11 @@
   margin-bottom: 1rem;
 }
 
+.page_numbers {
+  display: flex;
+  justify-content: center;
+}
+
 .numbers {
   list-style: none;
   display: flex;
@@ -42,5 +47,9 @@
     position: relative;
     left: 0;
     transform: none;
+  }
+
+  .page_numbers {
+    display: none;
   }
 }

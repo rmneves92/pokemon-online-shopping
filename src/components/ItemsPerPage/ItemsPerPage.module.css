@@ -6,4 +6,11 @@
   display: flex;
   flex: 0 1 auto;
   margin-left: auto;
+  margin-bottom: 0;
+}
+
+@media only screen and (max-width: 768px) {
+  .total_items {
+    display: none;
+  }
 }
