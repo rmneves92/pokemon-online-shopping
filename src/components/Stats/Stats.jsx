@@ -35,7 +35,7 @@ const Stats = ({ stats }) => {
     <div className={styles.stat_card}>
       {stats?.map((stat) => {
         return (
-          <>
+          <div key={stat.stat.name}>
             <span className={styles.stat_name}>
               {capitalize(stat.stat.name)} - {stat.base_stat}
             </span>
@@ -44,7 +44,7 @@ const Stats = ({ stats }) => {
                 <div className={styles.progress} />
               </div>
             </div>
-          </>
+          </div>
         );
       })}
     </div>

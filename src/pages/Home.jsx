@@ -31,6 +31,7 @@ const Home = () => {
     [limit, offset]
   );
 
+  // fetch all Pokémons based on the abilities selected and returns a single Promise
   const getPokemonsByAbility = useCallback(async (abilities) => {
     const response = await Promise.all(
       abilities.map((ability) =>
@@ -64,6 +65,7 @@ const Home = () => {
     return abilities;
   }, [selectedAbilities]);
 
+  // function responsible for concatenating all arrays of Pokemons into just one to be displayed
   const concatPokemonsList = (arr) => arr.flat(1);
 
   const getPokemonsWithAbilityFilter = useCallback(async () => {
@@ -149,6 +151,7 @@ const Home = () => {
     return id;
   };
 
+  // function responsible for search a pokemon based on its name or id
   const handleSearchPokemon = (name) => {
     const strLowerCase = convertToLowerCase(name);
 
@@ -184,14 +187,14 @@ const Home = () => {
 
   const handleSelectAbility = (ability) => {
     if (selectedAbilities.includes(ability)) {
-      removeAbility(ability);
+      removeAbilityFromFilter(ability);
       return;
     }
 
     setSelectedAbilities([...selectedAbilities, ability]);
   };
 
-  const removeAbility = (ability) => {
+  const removeAbilityFromFilter = (ability) => {
     const filteredAbilities = selectedAbilities.filter((item) => item !== ability);
     setSelectedAbilities(filteredAbilities);
     setTotal(filteredAbilities.length);
@@ -208,7 +211,7 @@ const Home = () => {
         setSearchQuery={setSearchQuery}
         handleSearch={handleSearchPokemon}
         handleChangeLimit={handleChangeLimit}
-        removeAbility={removeAbility}
+        removeAbility={removeAbilityFromFilter}
         handleSelectAbility={handleSelectAbility}
       />
 

@@ -1,70 +1,41 @@
-# Getting Started with Create React App
+# Pokémon Online Shopping
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## About the Project
 
-## Available Scripts
+This app lists all available Pokémon and allows you to see the details of each Pokémon. The ability to filter by name, ID or abilities makes it easy to find specific Pokémons, while the ability to view details and navigate through pages makes it easy to explore the entire list.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+1. **List of all Pokémons**: The application has a comprehensive list of all Pokémons, which includes their name, ID, abilities, images, stats, and types.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+2. **Filter by name, id and abilities**: You can use the filter feature to search for specific Pokémons based on their name, ID, or abilities. For example, if you want to search for all Pokémons that have the "Thunderbolt" ability, you can use the filter to search for Pokémons with that specific ability.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+3. **Navigation**: Navigate to the next or previous page.
 
-### `npm test`
+4. **Set the limit of Pokémons**: The application allows you to set a limit on the number of Pokémons you want to see per page. For example, you can set a limit of 20 Pokémons per page, and the application will display 20 Pokémons at a time. This feature can be useful if you want to quickly browse through the Pokémons without having to load too many at once.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+5. **Click to see details**: If you click on a specific Pokémon in the list, you can see more details about it, including images, stats, abilities, and types. This feature is helpful if you want to learn more about a specific Pokémon or if you want to compare different Pokémons. You can click back to return to the list of Pokémons.
 
-### `npm run build`
+## Technologies
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+`React`, `Jest`, `React Testing Library`, and `CSS Modules`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Setup
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Run the command `npm install` or `yarn` in the terminal to install all the necessary dependencies for the project. This will download and install all the required packages and libraries needed to run the application.
+2. Once the installation is complete, run the command `npm start` or `yarn start` in the terminal to start the application.
+3. The application should now open in your default browser at `http://localhost:3000/`.
 
-### `npm run eject`
+## Tests
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Run the command `npm run test` or `yarn test` in your terminal will run all unit tests that you have set up for the project using `Jest` and `React Testing Library`.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+[jest-fetch-mock](https://www.npmjs.com/package/jest-fetch-mock) was used to mock fetch API in Jest tests. It provides a way to simulate the response from an API endpoint to test the code that makes requests to that endpoint.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Approach
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This application has only one page called `Home`. When the component is mounted, it initializes several pieces of state using the `useState` hook, and sets a number of `useRef` variables to false or an empty string.
+The component fetches data from the PokeAPI using the fetch function to get lists of Pokémon and their abilities, as well as information about specific Pokémon. The fetched data is then used to set the state, which controls the rendering of components that display Pokémon data.
+The component includes several helper functions that allow users to filter the displayed Pokémon based on their abilities or to search for specific Pokémon by name or id.
+The component also uses the `useEffect` hook to watch for changes to state values and execute certain code blocks when those values change. This includes updating the displayed Pokémon when the selected abilities change, or resetting the displayed Pokémon when the search query is cleared.
+Finally, the `Home` component defines a series of child components that render the various UI elements of the app, including a list of Pokémon, a search bar, and various filters and pagination controls.
