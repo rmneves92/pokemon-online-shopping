@@ -7,7 +7,7 @@ const Pagination = ({ limit, offset, total, setOffset }) => {
   const pageArray = [-2, -1, 0, 1, 2].map((v) => currentPage + v).filter((page) => page > 0 && page <= pageCount);
 
   return (
-    <nav className={styles.pagination}>
+    <nav className={styles.pagination} data-testid="pagination">
       {total > 0 && (
         <ul className={styles.numbers}>
           <li onClick={() => setOffset(0)}>&laquo;</li>
@@ -29,6 +29,7 @@ const Pagination = ({ limit, offset, total, setOffset }) => {
           {pageArray.map((page) => {
             return (
               <li
+                key={page}
                 className={currentPage === page ? styles.active : null}
                 onClick={() => {
                   setOffset(limit * (page - 1));

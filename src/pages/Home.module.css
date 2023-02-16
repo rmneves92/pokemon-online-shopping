@@ -12,12 +12,6 @@
   position: relative;
 }
 
-.total_items {
-  font-size: 0.8rem;
-  color: var(--color-grey-dark-2);
-  text-align: right;
-  flex: 1;
-  display: flex;
-  flex: 0 1 auto;
-  margin-left: auto;
+.empty_msg {
+  text-align: center;
 }
