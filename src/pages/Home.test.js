@@ -89,7 +89,17 @@ describe('Home component', () => {
     userEvent.type(searchInput, '{enter}');
 
     await waitFor(() => {
-      expect(screen.getByText(/No Pokémons found./i)).toBeInTheDocument();
+      expect(screen.getByText(/no pokémons found/i)).toBeInTheDocument();
+    });
+  });
+
+  it('should show an error message when the API is not available', async () => {
+    fetch.mockRejectedValue(JSON.stringify({}));
+
+    render(<Home />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/the api is currently unavailable, please try again later/i)).toBeInTheDocument();
     });
   });
 

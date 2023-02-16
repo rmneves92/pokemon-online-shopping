@@ -18,6 +18,7 @@ const Home = () => {
   const [total, setTotal] = useState(1000);
   const [selectedAbilities, setSelectedAbilities] = useState([]);
   const [showEmptyMessage, setShowEmptyMessage] = useState(false);
+  const [showServerMessageError, setShowServerMessageError] = useState(false);
 
   const dataFetchedRef = useRef(false);
   const querySearchRef = useRef('');
@@ -73,6 +74,7 @@ const Home = () => {
 
     if (!sortedArray.length) {
       setShowEmptyMessage(true);
+      setShowServerMessageError(false);
     }
 
     setPokemonsWithAbilityFilter(sortedArray);
@@ -101,7 +103,7 @@ const Home = () => {
         setPokemons(pokemons);
       })
       .catch((err) => {
-        setShowEmptyMessage(true);
+        setShowServerMessageError(true);
       });
   }, [limit, offset]);
 
@@ -160,11 +162,13 @@ const Home = () => {
     fetch(`https://pokeapi.co/api/v2/pokemon/${strLowerCase}`)
       .then((res) => res.json())
       .then((data) => {
+        setShowServerMessageError(false);
         setShowEmptyMessage(false);
         setPokeInfo(data);
       })
       .catch((err) => {
         setShowEmptyMessage(true);
+        setShowServerMessageError(false);
         setPokeInfo(null);
       });
   };
@@ -208,7 +212,7 @@ const Home = () => {
         handleSelectAbility={handleSelectAbility}
       />
 
-      {!showEmptyMessage && (
+      {!showEmptyMessage && !showServerMessageError && (
         <div className={styles.pagination_wrap}>
           <Pagination total={total} limit={limit} setLimit={setLimit} offset={offset} setOffset={setOffset} />
 
@@ -223,6 +227,8 @@ const Home = () => {
       )}
 
       {pokeInfo && <PokeInfo pokemon={pokeInfo} />}
+
+      {showServerMessageError && <p className={styles.error_msg}>The API is currently unavailable, please try again later.</p>}
     </div>
   );
 };
