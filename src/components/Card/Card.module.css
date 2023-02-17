@@ -5,6 +5,10 @@
   flex-direction: column;
 }
 
+.name {
+  font-size: 1.2rem;
+}
+
 .image {
   width: 12rem;
 }

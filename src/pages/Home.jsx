@@ -112,21 +112,24 @@ const Home = () => {
   useEffect(() => {
     if (dataFetchedRef.current) return;
 
-    dataFetchedRef.current = true;
-
     getAbilities();
+    dataFetchedRef.current = true;
   }, []);
+
+  useEffect(() => {
+    if (selectedAbilities.length === 0) {
+      getPokemons();
+    }
+  }, [limit, offset, selectedAbilities, getPokemons]);
 
   useEffect(() => {
     if (selectedAbilities.length > 0) {
       const paginatedPokemons = paginatePokemons(pokemonsWithAbilityFilter);
       setPokemons(paginatedPokemons);
-    } else {
-      getPokemons();
     }
 
     setPokeInfo(null);
-  }, [limit, offset, selectedAbilities, pokemonsWithAbilityFilter, paginatePokemons, getPokemons]);
+  }, [limit, offset, selectedAbilities, pokemonsWithAbilityFilter]);
 
   useEffect(() => {
     getPokemonsWithAbilityFilter();
